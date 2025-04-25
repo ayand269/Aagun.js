@@ -1,0 +1,51 @@
+{
+  "name": "@aagun/core",
+  "version": "0.1.0-beta.2",
+  "description": "Core package of Aagun.js – Express-based architecture with decorators, middleware, and a powerful CLI.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "keywords": [
+    "aagun",
+    "aagun.js",
+    "nodejs",
+    "express",
+    "framework",
+    "typescript",
+    "backend",
+    "api",
+    "cli",
+    "router",
+    "nestjs",
+    "nextjs",
+    "fast"
+  ],
+  "scripts": {
+    "dev": "tsup src/index.ts --watch",
+    "build": "tsup && mkdir -p dist/worker && cp src/worker/thread-core.js dist/worker/thread-core.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "acorn": "^8.14.1",
+    "acorn-walk": "^8.3.4",
+    "chalk": "^5.4.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "ms": "^2.1.3",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  }
+}

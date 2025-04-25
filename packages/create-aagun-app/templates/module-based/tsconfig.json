@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "declaration": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "aagun": ["./node_modules/@aagun/core"],
+            "@aagun-config": ["./.aagun"]
+        },
+        "typeRoots": ["./src/types", "./node_modules/@types"],
+        "outDir": "dist"
+    },
+    "ts-node": {
+        "esm": true
+    },
+    "include": ["src"]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "aagun",
+  "description": "CLI tool for building blazing-fast backend apps with Aagun.js – the expressive Node.js framework.",
+  "keywords": [
+    "aagun", "aagun.js", "nodejs", "express", "framework",
+    "typescript", "backend", "api", "cli", "router", "nestjs", "nextjs", "fast"
+  ],
+  "bin": {
+    "aagun": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts",
+    "dev": "ts-node src/index.ts"
+  },
+  "version": "0.1.0-beta.2"
+}

@@ -1,0 +1,51 @@
+# 🔧 Node modules
+node_modules/
+**/node_modules/
+
+# 🛠 Build artifacts
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# 🔄 TypeScript cache
+.cache/
+turbo/
+
+# 🧪 Test coverage
+coverage/
+
+# 📦 Lock files (optional if you're using one package manager)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ⚙️ Env config
+.env
+.env.*
+!.env.example
+
+# 🪵 Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 💅 Editor/IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# 🔐 Husky internals
+.husky/_/
+
+# 🧬 VS Code extension config (optional)
+node-typescript-generator.code-workspace
+
+# 💄 ESLint / Prettier cache (if used)
+.eslintcache
+.prettiercache
