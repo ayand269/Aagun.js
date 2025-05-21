@@ -7,6 +7,7 @@ export interface AagunConfig {
         port?: number;
         basePath: string;
         hostname?: string;
+        cache?: boolean;
     };
     middleware?: {
         cors?: {
@@ -31,6 +32,14 @@ export interface AagunConfig {
     };
     project?: {
         structure: 'module-based' | 'type-based';
+    };
+    upload?: {
+        maxSize: number;
+        allowedTypes: Array<string>;
+    };
+    database?: {
+        type: 'mongodb' | 'postgresql';
+        connectionString: string;
     };
 }
 

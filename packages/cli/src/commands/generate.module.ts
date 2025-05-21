@@ -37,6 +37,7 @@ export const generateModuleCommand = new Command('module')
         const controllerClass = `${moduleName}Controller`;
         const serviceClass = `${moduleName}Service`;
         const modelClass = `${moduleName}Model`;
+        const pascalName = toPascalCase(moduleName);
 
         const decoratorImports = [];
         if (options.route) decoratorImports.push('Controller');
@@ -73,9 +74,26 @@ export class ${serviceClass} {
 }
 `;
 
-        const modelTemplate = `
-export class ${modelClass} {
-  // Define model schema or class fields here
+        const modelTemplate = `import { Schema, model } from '@aagun/core/mongoose';
+import { Model } from '@aagun/core';
+
+export interface ${pascalName}Doc {
+    // Define your User document fields here
+}
+
+@Model("${pascalName}")
+export class ${pascalName}Model {
+    static schema = new Schema<${pascalName}Doc>({
+        // Define your User schema fields here
+        // Example:
+        // name: { type: String, required: true },
+        // email: { type: String, required: true, unique: true }
+    },
+    {
+        timestamps: true,
+    });
+
+    static model = model<${pascalName}Doc>("${pascalName}", ${pascalName}Model.schema);
 }
 `;
 

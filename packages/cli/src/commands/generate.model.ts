@@ -25,9 +25,26 @@ export const generateModelCommand = new Command('model')
 
         await fs.ensureDir(path.dirname(filePath));
 
-        const content = `
+        const content = `import { Schema, model } from '@aagun/core/mongoose';
+import { Model } from '@aagun/core';
+
+export interface ${pascalName}Doc {
+    // Define your User document fields here
+}
+
+@Model("${pascalName}")
 export class ${pascalName}Model {
-  // Define your ${pascalName} fields here
+    static schema = new Schema<${pascalName}Doc>({
+        // Define your User schema fields here
+        // Example:
+        // name: { type: String, required: true },
+        // email: { type: String, required: true, unique: true }
+    },
+    {
+        timestamps: true,
+    });
+
+    static model = model<${pascalName}Doc>("${pascalName}", ${pascalName}Model.schema);
 }
 `;
 

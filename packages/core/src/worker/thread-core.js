@@ -1,17 +1,28 @@
-// thread-core.js (ESM style)
-import { workerData, parentPort } from 'node:worker_threads';
+import { parentPort, workerData } from 'node:worker_threads';
 
-const { fnName, data } = workerData;
+(async () => {
+    try {
+        const { taskName, data, fn } = workerData;
 
-await import(process.cwd() + '/src/worker/registry.ts');
+        if (!fn) {
+            throw new Error(`No function provided for task: ${taskName}`);
+        }
 
-const fn = global.__AAGUN_WORKERS__?.[fnName];
+        console.log(`[Worker] Starting task: "${taskName}"`);
 
-if (!fn) {
-    parentPort.postMessage({ ok: false, error: `Function '${fnName}' not found.` });
-    process.exit(1);
-}
+        const start = Date.now();
 
-fn(data)
-    .then((res) => parentPort.postMessage({ ok: true, data: res }))
-    .catch((err) => parentPort.postMessage({ ok: false, error: err.message }));
+        // Reconstruct function from string
+        const taskFn = eval(`(${fn})`);
+
+        const result = await taskFn(data);
+
+        const end = Date.now();
+
+        console.log(`[Worker] Finished task: "${taskName}" in ${end - start}ms`);
+
+        parentPort.postMessage({ success: true, result });
+    } catch (error) {
+        parentPort.postMessage({ success: false, error: error.message });
+    }
+})();

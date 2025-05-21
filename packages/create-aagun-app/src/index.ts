@@ -23,8 +23,6 @@ const lockedVersions = {
     'reflect-metadata': '0.2.2'
 };
 
-const corePath = path.resolve(__dirname, '../../core');
-
 console.log(chalk.cyan('\n🚀 Create Aagun App - Let’s build something powerful!\n'));
 
 const response = await prompts([
@@ -112,7 +110,7 @@ const targetDir = path.resolve(process.cwd(), name);
 if (fs.existsSync(targetDir)) {
     console.log(chalk.red(`❌ Folder "${name}" already exists.`));
     process.exit(1);
-  }
+}
 
 console.log(chalk.blue(`\n📁 Creating project folder "${name}"...`));
 await fs.copy(templateDir, targetDir);
@@ -145,7 +143,7 @@ if (isLatest) {
     console.log(chalk.yellow('\n📦 Installing latest dependencies...'));
 
     const deps = ['express', 'reflect-metadata', 'morgan', '@aagun/core@0.1.0-beta.2'];
-    const devDeps = ['typescript', '@esbuild-kit/esm-loader'];
+    const devDeps = ['typescript', '@esbuild-kit/esm-loader', '@types/multer'];
 
     execSync(`npm install ${deps.join(' ')} --save`, { cwd: targetDir, stdio: 'inherit' });
     execSync(`npm install ${devDeps.join(' ')} --save-dev`, { cwd: targetDir, stdio: 'inherit' });
@@ -175,7 +173,7 @@ if (isLatest) {
 }
 
 console.log(chalk.green('\n✅ Aagun.js project created successfully!'));
-console.log(`\nNext steps:\n`);
+console.log('\nNext steps:\n');
 console.log(chalk.cyan(`  cd ${name}`));
-console.log(chalk.cyan(`  npm run dev`));
-console.log(`\nHappy building with Aagun ⚡\n`);
+console.log(chalk.cyan('  npm run dev'));
+console.log('\nHappy building with Aagun ⚡\n');

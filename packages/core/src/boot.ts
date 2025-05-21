@@ -1,10 +1,13 @@
 import express from 'express';
-import cookieParser from 'cookie-parser';
 import loadRoutes from './router';
 import chalk from 'chalk';
 import { registerMiddleware } from './middleware';
 import { AagunConfig } from './types';
 import defaultConfig from './config';
+import { loadScheduledTasks } from './internal/loadScheduledTasks';
+import { loadBackgroundTasks } from './internal/loadBackgroundTask';
+import { setGlobalAagunConfig } from './internal/global-config';
+import { loadAllModels } from './database/loader';
 
 function mergeAagunConfig(defaults: any, user: any): any {
     return {
@@ -23,11 +26,24 @@ export async function startAagunApp(userConfig: AagunConfig) {
     // Built-in middleware
     app.use(express.json());
     const mergedConfig = mergeAagunConfig(defaultConfig, userConfig);
+    setGlobalAagunConfig(mergedConfig);
     // CORS
     if (mergedConfig.middleware?.cors?.enabled) {
         const cors = await import('cors');
         app.use(cors.default(mergedConfig.middleware.cors));
     }
+
+    if (userConfig.database?.type === 'mongodb') {
+        await import('./database/mongo').then(async (mongo) => {
+            await mongo.connectMongo(userConfig);
+
+            await loadAllModels(userConfig);
+        });
+    }
+
+    await loadBackgroundTasks();
+    // Sheduler
+    await loadScheduledTasks();
 
     // Cookies
     // if (mergedConfig.middleware?.cookies?.enabled) {

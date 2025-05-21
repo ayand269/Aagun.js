@@ -2,10 +2,18 @@ import 'reflect-metadata';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'url';
-import { Express, RequestHandler } from 'express';
-import { PATH_METADATA, METHOD_METADATA, MIDDLEWARE_METADATA } from './decorators';
+import { Express, NextFunction, RequestHandler, Request, Response } from 'express';
+import {
+    PATH_METADATA,
+    METHOD_METADATA,
+    MIDDLEWARE_METADATA,
+    DISABLE_CACHE_METADATA_KEY
+} from './decorators';
 import { HttpMethod, AagunConfig } from './types';
 import { routeRegistry } from './internal/routeRegistry';
+import { cacheStore } from './internal/cacheStore';
+import { buildCacheKey } from './utils/buildCacheKey';
+import { CACHE_METADATA_KEY } from './decorators';
 
 export default async function loadRoutes(app: Express, config: AagunConfig) {
     const structure = config.project?.structure || 'type-based';
@@ -58,7 +66,60 @@ export default async function loadRoutes(app: Express, config: AagunConfig) {
                     Reflect.getMetadata(MIDDLEWARE_METADATA, prototype, methodName) || [];
 
                 const fullPath = joinRoute(config.routing?.basePath || '', basePath, routePath);
-                const handler = controllerInstance[methodName].bind(controllerInstance);
+                const cacheTTL: number | undefined = Reflect.getMetadata(
+                    CACHE_METADATA_KEY,
+                    prototype,
+                    methodName
+                );
+                const disableCache: boolean = Reflect.getMetadata(
+                    DISABLE_CACHE_METADATA_KEY,
+                    prototype,
+                    methodName
+                );
+
+                const isCacheGloballyEnabled = config.app?.cache !== false;
+                const shouldUseCache =
+                    !disableCache &&
+                    (cacheTTL !== undefined || (isCacheGloballyEnabled && httpMethod === 'get'));
+                const ttl = cacheTTL ?? 60;
+
+                // const handler = controllerInstance[methodName].bind(controllerInstance);
+                const handler: (
+                    req: Request,
+                    res: Response,
+                    next: NextFunction
+                ) => Promise<void> = async (req, res, next) => {
+                    try {
+                        if (shouldUseCache) {
+                            const key = buildCacheKey(req);
+                            const cached = cacheStore.get(key);
+                            if (cached) {
+                                res.json(cached);
+                                return;
+                            }
+                        }
+
+                        let responseBody: any;
+                        const originalJson = res.json;
+                        res.json = function (body: any) {
+                            responseBody = body;
+                            return originalJson.call(this, body);
+                        };
+
+                        const result = await controllerInstance[methodName](req, res, next);
+
+                        if (shouldUseCache && responseBody) {
+                            const key = buildCacheKey(req);
+                            cacheStore.set(key, responseBody, ttl);
+                        }
+
+                        if (!res.headersSent && result !== undefined) {
+                            res.json(result);
+                        }
+                    } catch (err) {
+                        next(err);
+                    }
+                };
                 const allMiddleware: RequestHandler[] = [...classMiddleware, ...methodMiddleware];
 
                 routeRegistry.push({
