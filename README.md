@@ -25,7 +25,7 @@
 
 Explore the full guide on setup, features, background tasks, file uploads, caching, and more:
 
-👉 **[Read the Docs](https://your-docs-url.gitbook.io/aagun)**
+👉 **[Read the Docs](https://aagun.gitbook.io/docs/)**
 
 ---
 
