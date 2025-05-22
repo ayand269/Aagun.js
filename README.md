@@ -21,6 +21,14 @@
 
 ---
 
+## 📚 Documentation
+
+Explore the full guide on setup, features, background tasks, file uploads, caching, and more:
+
+👉 **[Read the Docs](https://your-docs-url.gitbook.io/aagun)**
+
+---
+
 ## 🚀 Quick Start
 
 ```bash
@@ -28,19 +36,6 @@ npx create-aagun-app my-app
 cd my-app
 npm run dev
 ```
-
----
-
-## 🔥 Features
-
-- ⚡ **Express + TypeScript** powered
-- 💅 Decorator-based route & middleware definitions
-- 🧱 File-based controller structure
-- 🚦 Built-in middleware support
-- 🧰 Powerful CLI (`aagun dev`, `aagun build`, `aagun start`, `aagun generate`)
-- ♻️ Hot Reloading in dev mode
-- 🔐 Default AuthMiddleware + cookie helpers
-- 📆 Optimized for performance in production
 
 ---
 
@@ -110,33 +105,6 @@ aagun create my-app
 
 ---
 
-## 🧪 Coming Soon
-
-- ✅ API caching
-- ✅ Job scheduling
-- ✅ File upload module
-- ✅ Mongo & SQL support
-- ✅ GraphQL + WebSocket
-
----
-
-## 📆 Packages
-
-| Package | Description |
-|---------|-------------|
-| [`aagun`](https://www.npmjs.com/package/aagun) | CLI tool & dev runner |
-| [`create-aagun-app`](https://www.npmjs.com/package/create-aagun-app) | Scaffolds a new Aagun.js project |
-| [`@aagun/core`](https://www.npmjs.com/package/@aagun/core) | Core framework logic & runtime |
-
----
-
-## 👨‍💼 Contributing
-
-Contributions, feedback, and PRs are welcome!  
-Open an issue or submit a PR — we’d love to improve Aagun.js together 🔥
-
----
-
 ## 📄 License
 
 MIT © [Ayan Das](https://github.com/yourusername)
@@ -147,5 +115,5 @@ MIT © [Ayan Das](https://github.com/yourusername)
 
 - [Website](https://yourprojectsite.com)
 - [GitHub](https://github.com/yourusername/aagun)
-- [Documentation (coming soon)]()
+- [Documentation](https://aagun.gitbook.io/docs/)
 
